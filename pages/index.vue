@@ -58,7 +58,8 @@
             </li>
             <li>
               <label for="">price</label>
-              <input type="text" :value="p.price"  class="price" :class="'updatePrice-' + p.id"> <iconSend @click="hide(p.id)"/>
+              <input type="text" :value="p.price"  class="price" :class="'updatePrice-' + p.id"> 
+              <iconSend @click="update(p.id)"/>
             </li>
           </ul>
         </p>
@@ -93,8 +94,8 @@
 </template>
 
 <script>
-import iconEdit from 'vue-material-design-icons/Pencil'
-import iconSend from 'vue-material-design-icons/Send'
+import iconEdit from 'vue-material-design-icons/Pencil.vue'
+import iconSend from 'vue-material-design-icons/Send.vue'
 export default {
   components: { iconEdit, iconSend},
   data() {
@@ -117,12 +118,22 @@ export default {
       document.querySelector('.hidden-' + n).style.display = 'inline-block'
       document.querySelector('.shown-' + n).style.display = 'none'
     },
-    hide(n) {
-      document.querySelector('.hidden-' + n).style.display = 'none'
-      document.querySelector('.shown-' + n).style.display = 'block'
-      // document.querySelector('.val-' + n).innerHTML = document.querySelector('input.update-' + n).value
-      document.querySelector('.valItem-' + n).innerHTML = document.querySelector('input.updateItem-' + n).value
-      document.querySelector('.valPrice-' + n).innerHTML = document.querySelector('input.updatePrice-' + n).value
+    update(id) {
+      let item = document.querySelector('input.updateItem-' + id).value 
+      let price = document.querySelector('input.updatePrice-' + id).value 
+      let info = { editItemPrice : true, item, price, id }
+      console.log(info)
+      this.$axios.post(this.url, info)
+      .then( res => {
+        console.log(res.data)
+        // if(res.data == 'success : edited ItemPrice') {
+        //   alert('updated ' + id)
+        // }
+      })
+      document.querySelector('.hidden-' + id).style.display = 'none'
+      document.querySelector('.shown-' + id).style.display = 'block'
+      document.querySelector('.valItem-' + id).innerHTML = item
+      document.querySelector('.valPrice-' + id).innerHTML = price
     },
     clear() {
       this.login.username = '', this.login.password = '', this.formError  = ''

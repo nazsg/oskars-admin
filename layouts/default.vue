@@ -209,6 +209,7 @@ footer {
         display: none;
       }      
       li span.material-design-icon {
+        padding-left: 10px;
         color: #666;
         &:hover {
           cursor: pointer;
