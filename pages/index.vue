@@ -102,8 +102,8 @@ export default {
     return {
       login :{
         loginToOskars: '',
-        username: 'adam',
-        password: '8787os',
+        username: '',
+        password: '',
       },
       formError: '',
       loggedIn : false,
@@ -111,6 +111,7 @@ export default {
       prices: '',
       url: 'https://oskarsbarbers4men.co.uk/indexAPI.php',
       newItem: '', newItemPrice: '',
+      timedout: false
     }
   },
   methods: {
@@ -119,21 +120,27 @@ export default {
       document.querySelector('.shown-' + n).style.display = 'none'
     },
     update(id) {
-      let item = document.querySelector('input.updateItem-' + id).value 
-      let price = document.querySelector('input.updatePrice-' + id).value 
-      let info = { editItemPrice : true, item, price, id }
-      console.log(info)
-      this.$axios.post(this.url, info)
-      .then( res => {
-        console.log(res.data)
-        // if(res.data == 'success : edited ItemPrice') {
-        //   alert('updated ' + id)
-        // }
-      })
-      document.querySelector('.hidden-' + id).style.display = 'none'
-      document.querySelector('.shown-' + id).style.display = 'block'
-      document.querySelector('.valItem-' + id).innerHTML = item
-      document.querySelector('.valPrice-' + id).innerHTML = price
+      this.checkLoginStatus()
+      setTimeout(() => {
+        if(this.loginStatus == 'ok') {
+
+          let item = document.querySelector('input.updateItem-' + id).value 
+          let price = document.querySelector('input.updatePrice-' + id).value 
+          let info = { editItemPrice : true, item, price, id }
+          // console.log(info)
+          this.$axios.post(this.url, info)
+          .then( res => {
+            // console.log(res.data)
+            // if(res.data == 'success : edited ItemPrice') {
+            //   alert('updated ' + id)
+            // }
+          })
+          document.querySelector('.hidden-' + id).style.display = 'none'
+          document.querySelector('.shown-' + id).style.display = 'block'
+          document.querySelector('.valItem-' + id).innerHTML = item
+          document.querySelector('.valPrice-' + id).innerHTML = price        
+        }
+      }, 1000);
     },
     clear() {
       this.login.username = '', this.login.password = '', this.formError  = ''
@@ -193,7 +200,7 @@ export default {
       setTimeout(() => {
         if(this.loginStatus == 'ok') {
           let update = { editItem: true, id: i, item: e.target.value}
-          console.log(update)
+          // console.log(update)
           this.$axios.post(this.url, update)
           .then(res => {
             console.log(res.data)
@@ -206,7 +213,7 @@ export default {
       setTimeout(() => {
         if(this.loginStatus == 'ok') {
           let update = { editPrice: true, id: i, price: e.target.value}
-          console.log(update)
+          // console.log(update)
           this.$axios.post(this.url, update)
           .then(res => {
             console.log(res.data)
@@ -223,7 +230,8 @@ export default {
           this.loginStatus = 'ok'
           } else {
           this.logout()
-          window.location.reload()
+          this.formError = 'timed out'
+          // window.location.reload()
         }
       })
     },
