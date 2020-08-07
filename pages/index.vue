@@ -1,7 +1,9 @@
 <template>
   <div class="home">
     <h2>Oskars Barbers Administrative Page</h2>
-    <form class="login" v-if="!loggedIn" onSubmit="return false">
+    <div  v-if="!loggedIn">
+
+    <form class="login" onSubmit="return false">
       <ul>
         <li>
           <label for="">username</label>
@@ -35,6 +37,75 @@
       </div> -->
       
     </form>
+
+      <ul class="hours">
+        Opening Hours
+        <li>
+          <span>mon</span>
+          <div>
+            <input type="text" value="0900">
+          </div>
+          <div>
+            <input type="text" value="1830">
+          </div>
+        </li>
+        <li>
+          <span>tue</span>
+          <div>
+            <input type="text" value="0900">
+          </div>
+          <div>
+            <input type="text" value="1830">
+          </div>
+        </li>
+        <li>
+          <span>wed</span>
+          <div>
+            <input type="text" value="0900">
+          </div>
+          <div>
+            <input type="text" value="1830">
+          </div>
+        </li>
+        <li>
+          <span>thu</span>
+          <div>
+            <input type="text" value="0900">
+          </div>
+          <div>
+            <input type="text" value="1830">
+          </div>
+        </li>
+        <li>
+          <span>fri</span>
+          <div>
+            <input type="text" value="0900">
+          </div>
+          <div>
+            <input type="text" value="1830">
+          </div>
+        </li>
+        <li>
+          <span>sat</span>
+          <div>
+            <input type="text" value="0900">
+          </div>
+          <div>
+            <input type="text" value="1830">
+          </div>
+        </li>
+        <li>
+          <span>sun</span>
+          <div>
+            <input type="text" value="0900">
+          </div>
+          <div>
+            <input type="text" value="1830">
+          </div>
+        </li>
+      </ul>
+    </div>
+
     <div v-else class="loggedIn">
       <div>
         <button class="logout" @click.prevent="logout">Log out</button>

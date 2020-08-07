@@ -217,5 +217,24 @@ footer {
         }
       }
   }
+
+  .hours {
+    li {
+      display: flex;
+      // flex-direction: column;
+        justify-content: space-between;
+      span {
+        display: inline-block;
+        width: 50px;
+      }
+      div {
+        display: flex;
+        
+        input {
+          width: 60px;
+        }
+      }
+    }
+  }
 }
 </style>
