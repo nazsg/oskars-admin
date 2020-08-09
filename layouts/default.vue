@@ -163,12 +163,10 @@ footer {
       margin:0 auto;
       display:block;
     }
-    @media (min-width: 600px) {
-      width: 500px;
-    }
-    div, section {
-      // display: flex;
-      // flex-direction: column;
+
+    div {
+      display: flex;
+      flex-direction: column;
       width: 100%;
       ul {
         display: flex;
@@ -182,14 +180,22 @@ footer {
         border-radius: 7px;
         li {
           display: flex;
-          flex-direction: column;
+          // flex-direction: column;
           width: 100%;
           margin: 2px auto;
+          // justify-content: space-between;
           @media (min-width: 600px) {
             flex-direction: row;
           }
           label {
             width: 50px;
+          }
+          span.material-design-icon {
+            // color: red;
+            display: block;
+            // background-color: rgb(228, 190, 190);
+            text-align: right;
+            float: right;
           }
         }
       }
@@ -216,12 +222,16 @@ footer {
           color: #000;
         }
       }
+
+    @media (min-width: 600px) {
+      width: 500px;
+    }
+
   }
 
   .hours {
     li {
       display: flex;
-      // flex-direction: column;
         justify-content: space-between;
       span {
         display: inline-block;

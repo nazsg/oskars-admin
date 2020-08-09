@@ -38,99 +38,77 @@
       
     </form>
 
-      <ul class="hours">
-        Opening Hours
-        <li>
-          <span>mon</span>
-          <div>
-            <input type="text" value="0900">
-          </div>
-          <div>
-            <input type="text" value="1830">
-          </div>
-        </li>
-        <li>
-          <span>tue</span>
-          <div>
-            <input type="text" value="0900">
-          </div>
-          <div>
-            <input type="text" value="1830">
-          </div>
-        </li>
-        <li>
-          <span>wed</span>
-          <div>
-            <input type="text" value="0900">
-          </div>
-          <div>
-            <input type="text" value="1830">
-          </div>
-        </li>
-        <li>
-          <span>thu</span>
-          <div>
-            <input type="text" value="0900">
-          </div>
-          <div>
-            <input type="text" value="1830">
-          </div>
-        </li>
-        <li>
-          <span>fri</span>
-          <div>
-            <input type="text" value="0900">
-          </div>
-          <div>
-            <input type="text" value="1830">
-          </div>
-        </li>
-        <li>
-          <span>sat</span>
-          <div>
-            <input type="text" value="0900">
-          </div>
-          <div>
-            <input type="text" value="1830">
-          </div>
-        </li>
-        <li>
-          <span>sun</span>
-          <div>
-            <input type="text" value="0900">
-          </div>
-          <div>
-            <input type="text" value="1830">
-          </div>
-        </li>
-      </ul>
-    </div>
+    </div> 
 
-    <div v-else class="loggedIn">
+    <div v-else class="loggedIn"> 
       <div>
         <button class="logout" @click.prevent="logout">Log out</button>
-
+        <h3>PRICES</h3>
         <p v-for="(p,index) in prices" :key="index">
-          <ul :class="'shown-' + p.id">
+          <ul :class="'shown-' + p.price_id">
             <li>
               <label for="">item</label>
-              <span :class="'valItem-' + p.id">{{p.item}}</span>
+              <span :class="'valItem-' + p.price_id">{{p.item}}</span>
             </li>
             <li>
               <label for="">price</label>
-              <span :class="'valPrice-' + p.id">{{p.price}}</span> <iconEdit @click="show(p.id)" />
+              <span :class="'valPrice-' + p.price_id">{{p.price}}</span> 
+              <iconEdit @click="show(p.price_id)" title="Edit" />
             </li>
           </ul>
 
-          <ul class="hidden" :class="'hidden-' + p.id">
+          <ul class="hidden" :class="'hidden-' + p.price_id">
             <li>
               <label for="">item</label>
-              <input type="text" :value="p.item" class="item" :class="'updateItem-' + p.id">
+              <input type="text" :value="p.item" class="item" :class="'updateItem-' + p.price_id">
             </li>
             <li>
               <label for="">price</label>
-              <input type="text" :value="p.price"  class="price" :class="'updatePrice-' + p.id"> 
-              <iconSend @click="update(p.id)"/>
+              <input type="text" :value="p.price"  class="price" :class="'updatePrice-' + p.price_id"> 
+              <iconSend @click="updatePrice(p.price_id)" title="Submit" />
+            </li>
+          </ul>
+        </p>
+        <section>
+          <ul>
+          Add new item
+            <li>
+              <label for="">item</label>
+              <input type="text" v-model="newItem" class="item">
+            </li>
+            <li>
+              <label for="">price</label>
+              <input type="text" v-model="newItemPrice" class="price">
+            </li>
+            <li>
+              <label for=""></label>
+              <button @click.prevent="add">Add</button>
+            </li>
+          </ul>
+        </section>        
+        <h3 style="margin-top:20px">HOURS</h3>
+        <p v-for="(p,index) in hours" :key="index+100">
+          <ul :class="'shown-' + p.hour_id + 100">
+            <li>
+              <label for="">start</label>
+              <span :class="'valStart-' + p.hour_id + 100">{{p.start}}</span>
+            </li>
+            <li>
+              <label for="">end</label>
+              <span :class="'valEnd-' + p.hour_id + 100">{{p.end}}</span> 
+              <iconEdit @click="show(p.hour_id + 100)" title="Edit" />
+            </li>
+          </ul>
+
+          <ul class="hidden" :class="'hidden-' + p.hour_id + 100">
+            <li>
+              <label for="">start</label>
+              <input type="text" :value="p.start" class="item" :class="'updateStart-' + p.hour_id + 100">
+            </li>
+            <li>
+              <label for="">end</label>
+              <input type="text" :value="p.end"  class="price" :class="'updateEnd-' + p.hour_id + 100"> 
+              <iconSend @click="updateHour(p.hour_id + 100)" title="Submit" />
             </li>
           </ul>
         </p>
@@ -143,23 +121,7 @@
             <input type="text" :value="p.price" @blur="edit_price(p.id,$event)" class="price">
           </li> -->
       </div>
-      <section>
-        <ul>
-        Add new item
-          <li>
-            <label for="">item</label>
-            <input type="text" v-model="newItem" class="item">
-          </li>
-          <li>
-            <label for="">price</label>
-            <input type="text" v-model="newItemPrice" class="price">
-          </li>
-          <li>
-            <label for=""></label>
-            <button @click.prevent="add">Add</button>
-          </li>
-        </ul>
-      </section>
+
     </div>
   </div>
 </template>
@@ -180,7 +142,9 @@ export default {
       loggedIn : false,
       loginStatus: '',
       prices: '',
-      url: 'https://oskarsbarbers4men.co.uk/indexAPI.php',
+      hours: '',
+      priceUrl: 'https://oskarsbarbers4men.co.uk/indexAPI.php',
+      hourUrl: 'https://oskarsbarbers4men.co.uk/indexAPI_hours.php',
       newItem: '', newItemPrice: '',
       timedout: false
     }
@@ -190,26 +154,42 @@ export default {
       document.querySelector('.hidden-' + n).style.display = 'inline-block'
       document.querySelector('.shown-' + n).style.display = 'none'
     },
-    update(id) {
+    updatePrice(id) {
       this.checkLoginStatus()
       setTimeout(() => {
         if(this.loginStatus == 'ok') {
 
           let item = document.querySelector('input.updateItem-' + id).value 
           let price = document.querySelector('input.updatePrice-' + id).value 
-          let info = { editItemPrice : true, item, price, id }
+          let info = { editItemPrice : true, item, price, price_id: id }
           // console.log(info)
-          this.$axios.post(this.url, info)
+          this.$axios.post(this.priceUrl, info)
           .then( res => {
-            // console.log(res.data)
-            // if(res.data == 'success : edited ItemPrice') {
-            //   alert('updated ' + id)
-            // }
           })
           document.querySelector('.hidden-' + id).style.display = 'none'
           document.querySelector('.shown-' + id).style.display = 'block'
           document.querySelector('.valItem-' + id).innerHTML = item
           document.querySelector('.valPrice-' + id).innerHTML = price        
+        }
+      }, 1000);
+    },
+    updateHour(id) {
+      let id_orig = id.replace('100', '')
+      this.checkLoginStatus()
+      setTimeout(() => {
+        if(this.loginStatus == 'ok') {
+
+          let start = document.querySelector('input.updateStart-' + id).value 
+          let end = document.querySelector('input.updateEnd-' + id).value 
+          let info = { editHours : true, start, end, hour_id: id_orig }
+          // console.log(info)
+          this.$axios.post(this.hourUrl, info)
+          .then( res => {
+          })
+          document.querySelector('.hidden-' + id).style.display = 'none'
+          document.querySelector('.shown-' + id).style.display = 'block'
+          document.querySelector('.valStart-' + id).innerHTML = start
+          document.querySelector('.valEnd-' + id).innerHTML = end        
         }
       }, 1000);
     },
@@ -240,7 +220,7 @@ export default {
       }
     },
     submit() {
-      this.$axios.post(this.url, this.login)
+      this.$axios.post(this.priceUrl, this.login)
       .then(res => {
         if(res.data == 'success') {
           this.loggedIn = true
@@ -253,15 +233,15 @@ export default {
       })
     },
     successful_login() {
-      this.$axios.get(this.url)
-      .then(res => {
-        this.prices = res.data
-        })
+      this.$axios.get(this.hourUrl)
+      .then(res => this.hours = res.data)
+      this.$axios.get(this.priceUrl)
+      .then(res => this.prices = res.data)
     },
     logout() {
       this.loggedIn = false
       localStorage.removeItem('loggedIn')
-      this.$axios.get(this.url + '?logout')
+      this.$axios.get(this.priceUrl + '?logout')
       // setTimeout(() => {
       //   window.location.reload()      
       // }, 500);
@@ -272,7 +252,7 @@ export default {
         if(this.loginStatus == 'ok') {
           let update = { editItem: true, id: i, item: e.target.value}
           // console.log(update)
-          this.$axios.post(this.url, update)
+          this.$axios.post(this.priceUrl, update)
           .then(res => {
             console.log(res.data)
           })  
@@ -285,7 +265,7 @@ export default {
         if(this.loginStatus == 'ok') {
           let update = { editPrice: true, id: i, price: e.target.value}
           // console.log(update)
-          this.$axios.post(this.url, update)
+          this.$axios.post(this.priceUrl, update)
           .then(res => {
             console.log(res.data)
           })  
@@ -293,7 +273,7 @@ export default {
       }, 1000);
     },
     checkLoginStatus() {
-      this.$axios.get(this.url + '?check_status')
+      this.$axios.get(this.priceUrl + '?check_status')
       .then(res => {
         console.log(res.data)
         if(res.data == 'loggedin') {
@@ -309,7 +289,7 @@ export default {
     add() {
       let newItem =  {addItem: true, item: this.newItem, price: this.newItemPrice}
       console.log(newItem)
-      this.$axios.post(this.url, newItem)
+      this.$axios.post(this.priceUrl, newItem)
       .then(res => {
         console.log(res.data)
       })
@@ -320,7 +300,7 @@ export default {
     }
   },
   mounted() {
-    this.$axios.get(this.url + '?check_status')
+    this.$axios.get(this.priceUrl + '?check_status')
     .then(res => {
       if(res.data == 'loggedin') {
         localStorage.setItem('loggedIn', true)
